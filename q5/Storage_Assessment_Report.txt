@@ -1,0 +1,51 @@
+Question 5: Storage Health Assessment and Documentation
+
+Commands and outputs:
+
+1) lsblk
+Output:
+NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+loop0     7:0    0 63.8M  1 loop
+loop1     7:1    0 91.7M  1 loop
+loop2     7:2    0 49.3M  1 loop
+loop3     7:3    0  257G  0 loop
+loop4     7:4    0   32G  0 loop /workspaces
+sda       8:0    0   30G  0 disk
+├─sda1    8:1    0 29.9G  0 part /vscode
+├─sda14   8:14   0    4M  0 part
+└─sda15   8:15   0  106M  0 part
+sdb       8:16    0   45G  0 disk
+└─sdb1    8:17   0   45G  0 part /tmp
+sdc       8:32    0  512G  0 disk
+└─sdc1    8:33   0  512G  0 part
+
+2) mount | head -5
+Output:
+overlay on / type overlay
+proc on /proc type proc
+tmpfs on /dev type tmpfs
+devpts on /dev/pts type devpts
+sysfs on /sys type sysfs
+
+3) df -h
+Output:
+Filesystem      Size  Used Avail Use% Mounted on
+overlay          32G  9.6G   21G  33% /
+tmpfs            64M     0   64M   0% /dev
+shm              64M     0   64M   0% /dev/shm
+/dev/root        29G   24G  5.7G  81% /vscode
+/dev/sdb1        44G  1.3G   41G   3% /tmp
+/dev/loop4       32G  9.6G   21G  33% /workspaces
+
+4) df -i
+Output:
+Filesystem      Inodes  IUsed   IFree IUse% Mounted on
+overlay        2097152 203051 1894101   10% /
+tmpfs          1016900    213 1016687    1% /dev
+shm            1016900      1 1016899    1% /dev/shm
+/dev/root      3870720 243492 3627228    7% /vscode
+/dev/sdb1      2949120     33 2949087    1% /tmp
+/dev/loop4     2097152 203051 1894101   10% /workspaces
+
+Observations:
+The system has multiple storage devices, including sda, sdb, and sdc, with several mounted filesystems. Disk usage is currently healthy overall, with ample free space available on /tmp and /workspaces. Inode usage is also low, so there is no immediate indication of inode exhaustion. Recommended actions include monitoring disk growth over time and cleaning unnecessary files if application logs or temporary data increase.

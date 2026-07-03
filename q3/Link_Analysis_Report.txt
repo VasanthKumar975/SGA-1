@@ -1,0 +1,56 @@
+Question 3: File System and Link Analysis
+
+Commands and outputs:
+
+1) rm -f original.txt hardlink.txt symlink.txt
+2) echo "Linux link test file" > original.txt
+3) ln original.txt hardlink.txt
+4) ln -s original.txt symlink.txt
+5) ls -li
+Output:
+total 8
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul  3 16:28 hardlink.txt
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul  3 16:28 original.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul  3 16:29 symlink.txt -> original.txt
+
+6) stat original.txt hardlink.txt symlink.txt
+Output:
+File: original.txt
+Inode: 1310805
+Links: 2
+File: hardlink.txt
+Inode: 1310805
+Links: 2
+File: symlink.txt -> original.txt
+Inode: 1310806
+Links: 1
+
+7) cat original.txt
+Output:
+Linux link test file
+
+8) cat hardlink.txt
+Output:
+Linux link test file
+
+9) cat symlink.txt
+Output:
+Linux link test file
+
+10) rm original.txt
+11) ls -li
+Output:
+total 4
+1310805 -rw-rw-rw- 1 codespace codespace 21 Jul  3 16:28 hardlink.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul  3 16:29 symlink.txt -> original.txt
+
+12) cat hardlink.txt
+Output:
+Linux link test file
+
+13) cat symlink.txt
+Output:
+cat: symlink.txt: No such file or directory
+
+Conclusion:
+The hard link shared the same inode as the original file, so deleting the original file did not remove the data. The symbolic link had a different inode and pointed to the original path, so it broke after the original file was removed.
